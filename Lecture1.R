@@ -70,4 +70,83 @@ par(mfrow=c(1,2),mar=c(5,4,2,1))
 with(subset(pollution,region=="west"),plot(latitude,pm25,main="West"))
 with(subset(pollution,region=="east"),plot(latitude,pm25,main="east"))
 
+##############################################
+#Plotting systems in R
+##############################################
 
+#Base plotting system
+    #No way to take back stuff
+    #Translate difficult
+    
+#BasePlot
+library(dattasets)
+data(cars)
+with(cars,plot(speed,dist))
+
+
+#The Lattice System
+    #Created with single function
+    #specify a lot of information
+    #Good for relationships
+
+    #Lattice can be akward with single call
+    #Difficult to annotate
+    #Cannot add once created
+
+library(lattice)
+state = data.frame(state.x77,region = state.region)
+xyplot(Life.Exp ~ Income | region, data=state,layout=c(4,1))
+
+
+#ggplot2 System
+    #splits the difference between base and lattice
+    #allows annotating
+    #similar to lattice easier to use
+    #default but can customize
+
+library(ggplot2)
+data(mpg)
+qplot(displ,hwy,data=mpg)
+
+#Summary Plots
+    #Base: Artist pallete
+    #Lattice: Enite plot 1 function
+    #ggplot2: Mixes elements of base and Lattice
+
+
+##############################################
+#Base Plotting System
+##############################################
+
+
+library(datasets)
+
+
+hist(airquality$Ozone) #draw new plot for histogram
+
+with(airquality,plot(Wind,Ozone))
+
+#BoxPlot
+airquality = transform(airquality,Month = factor(Month))
+boxplot(Ozone ~ Month, airquality, xlab = "Month",ylab = "Ozone (ppd)")
+
+#key paramaters
+    #pch: plotting symbol
+    #lty: line type
+    #lwd: line width
+    #col: plottin gcolor
+    #xlab: character string for x-axis label
+    #ylab: character string for y-axis label
+    #las: orientation of axis labels
+    #bg: background color
+    #mar: margin size
+    #oma: outer margine size
+    #mfrow: number of plots per row
+    #mfcol: number of plots per row
+
+
+#get defaut values
+par("lty")
+par("mar")
+par("mfrow")
+par("mfcol")
