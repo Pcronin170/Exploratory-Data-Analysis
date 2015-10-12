@@ -97,7 +97,7 @@ with(cars,plot(speed,dist))
 
 library(lattice)
 state = data.frame(state.x77,region = state.region)
-xyplot(Life.Exp ~ Income | region, data=state,layout=c(4,1))
+z = xyplot(Life.Exp ~ Income | region, data=state,layout=c(4,1))
 
 
 #ggplot2 System
@@ -261,3 +261,136 @@ str(g)
 plot(x,y, type = "n") #plot with no data
 points(x[g=="Male"],y[g=="Male"],col="blue",pch=19)
 points(x[g=="Female"],y[g=="Female"],col="pink",pch=19)
+
+#################################
+#Week 2
+#################################
+
+
+##############################################
+#Lattice Plotting System
+##############################################
+
+library(lattice)
+library(datasets)
+
+#Basic lattice plot
+xyplot(Ozone ~ Wind,data=airquality)
+
+#Simple lattice plot
+airquality = transform(airquality,Month = factor(Month))
+xyplot(Ozone ~ Wind|Month,data=airquality,layout = c(5,1))
+
+#If save need to print 
+p = xyplot(Ozone ~ Wind,data=airquality)
+print(p)
+
+
+##############################################
+#Lattice Panel Functions
+##############################################
+
+set.seed(10)
+x = rnorm(100)
+f = rep(0:1,each=50)
+y = x + f - f * x + rnorm(100,sd=0.5)
+f = factor(f,labels = c("Group1","Group 2"))
+xyplot(y~x | f, layout = c(2,1))
+
+#Custom Panel function
+a = xyplot(y ~ x | f, panel = function(x,y,...){
+    panel.xyplot(x,y,...) #first callthe default panel function for 'xyplot'
+    panel.abline(h=median(y),lty = 2) #add horizontal line for median?
+})
+class(a)
+
+#Custom Panel function (linear regression)
+xyplot(y ~ x | f, panel = function(x,y,...){
+    panel.xyplot(x,y,...) #first callthe default panel function for 'xyplot'
+    panel.lmline(x,y,col=2) #Overlay simple linear regression line
+    panel.sp
+})
+
+#No base plot functions allowed
+
+##############################################
+#ggplot2 Plotting system - part 1
+##############################################
+
+library(ggplot2)
+
+#asthectics
+#geoms
+#Label factors
+
+##############################################
+#ggplot2 Plotting system - part 2
+##############################################
+
+library(ggplot2)
+str(mpg)
+
+#Basic plot
+qplot(displ,hwy,data=mpg)
+
+#Modify asthetics
+qplot(displ,hwy,data=mpg,color=drv)
+
+#Adding a geom
+qplot(displ,hwy,data=mpg,geom=c("point","smooth"))
+qplot(displ,hwy,data=mpg,geom=c("point","smooth"),color = drv)
+
+#Historams
+qplot(hwy,data=mpg,fill=drv)
+
+#Facets
+qplot(displ,hwy,data=mpg,facets=.~drv)
+qplot(hwy,data=mpg,facets = drv~.,binwidth=2)
+
+
+##############################################
+#ggplot2 Plotting system - part 3
+##############################################
+
+#Componets
+#data frame
+#aesthetic mapping
+#geoms
+#facets: for conditional plots
+#stats: statistical transformations
+#scales: define how stuff is coded male = red, female = blue
+#Coordinate system
+
+#Plots are built in layers
+#Plot the data
+#Overlay a summary
+#Metadata and annotation
+
+p <- g + geom_point()
+
+##################################
+#Quiz2
+###################################
+library(nlme)
+library(lattice)
+xyplot(weight ~ Time | Diet, BodyWeight)
+str(BodyWeight)
+
+
+#Quesiton 7
+library(datasets)
+data(airquality)
+
+airquality = transform(airquality,Month = factor(Month))
+qplot(Wind,Ozone, data=airquality, facets = .~ Month)
+
+qplot(Wind,Ozone,data=airquality,facets = . ~ factor(Month))
+
+#Question 9
+library(ggplot2)
+g <- ggplot(movies,aes(votes,rating))
+print(g)
+
+#Question 10
+qplot(votes,rating,data=movies)
+
